@@ -1,0 +1,17 @@
+
+{% for clusterContainer in clusterContainers %}
+{% for cluster in clusterContainer.clusters %}
+{{ divider }}{% for uniqueLogEntry in cluster.uniqueLogEntries %}{{ uniqueLogEntry.Message|slice(0,columnCount-1)}}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
+{{ divider }}
+{{ divider }}
+{% for clusterContainer in clusterContainers %}
+        type: {{ clusterContainer.Type }}
+       total: {{ clusterContainer.NumTotalEntries }}
+      unique: {{ clusterContainer.NumUniqueEntries }}
+    clusters: {{ clusterContainer.NumClusters }}
+
+{% endfor %}

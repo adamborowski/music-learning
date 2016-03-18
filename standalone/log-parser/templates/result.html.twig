@@ -1,0 +1,138 @@
+<h3>Log Analysis Tool report</h3>
+<p>developed on <a
+            href="https://bitbucket.org/aborowski/bashutils/src/master/log-analysis/">BitBucket</a>
+</p>
+
+<table class="confluenceTable">
+    <tbody>
+    <tr>
+        <th class="confluenceTh" style="text-align: right;">version:</th>
+        <td class="confluenceTd">{{ version }}</td>
+    </tr>
+    <tr>
+        <th class="confluenceTh" style="text-align: right;">threshold:</th>
+        <td class="confluenceTd">{{ threshold }}</td>
+    </tr>
+    </tbody>
+</table>
+
+
+<table class="confluenceTable">
+    <tbody>
+    {% for clusterContainer in clusterContainers %}
+
+        <tr>
+            <th class="confluenceTh" style="text-align: right;">type:</th>
+            <td class="confluenceTd">
+                {{ clusterContainer.Type }}
+            </td>
+            <th class="confluenceTh" style="text-align: right;">total:</th>
+            <td class="confluenceTd">
+                {{ clusterContainer.NumTotalEntries }}
+            </td>
+            <th class="confluenceTh" style="text-align: right;">unique:</th>
+            <td class="confluenceTd">
+                {{ clusterContainer.NumUniqueEntries }}
+            </td>
+            <th class="confluenceTh" style="text-align: right;">clusters:</th>
+            <td class="confluenceTd">
+                {{ clusterContainer.NumClusters }}
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+{% for clusterContainer in clusterContainers %}
+    {% for cluster in clusterContainer.clusters %}
+        <p><hr/></p>
+
+        {% set colour =  {'WARN':'Yellow','ERROR':'Red','DEBUG':'Gray'}[cluster.Type] %}
+
+
+        <table class="confluenceTable">
+            <tbody>
+            <tr>
+                <th class="confluenceTh" style="text-align: right;">type:</th>
+                <td class="confluenceTd">
+                    <img class="editor-inline-macro" width="88" data-macro-schema-version="1"
+                         src="/plugins/servlet/status-macro/placeholder?title={{ cluster.Type }}&amp;colour={{ colour }}"
+                         data-mce-src="https://extranet.atlassian.com/plugins/servlet/status-macro/placeholder?title={{ cluster.Type }}-{{ loop.index }}&colour={{ colour }}"
+                         height="18" data-macro-name="status"
+                         data-macro-parameters="colour={{ colour }}|title={{ cluster.Type }}-{{ loop.index }}"/>
+                </td>
+                <th class="confluenceTh" style="text-align: right;">first:</th>
+                <td class="confluenceTd">{{ cluster.FirstDate }}</td>
+                <th class="confluenceTh" style="text-align: right;">total:</th>
+                <td class="confluenceTd">{{ cluster.NumEntries }}</td>
+            </tr>
+            <tr>
+                <th class="confluenceTh" style="text-align: right;">resolution:</th>
+                <td class="confluenceTd">no action</td>
+                <th class="confluenceTh" style="text-align: right;">last:</th>
+                <td class="confluenceTd">{{ cluster.LastDate }}</td>
+                <th class="confluenceTh" style="text-align: right;">unique:</th>
+                <td class="confluenceTd">{{ cluster.NumUniqueEntries }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="wysiwyg-macro" data-macro-name="code"
+               data-macro-schema-version="1"
+               data-macro-body-type="PLAIN_TEXT">
+            <tbody>
+            <tr>
+                <td class="wysiwyg-macro-body">
+                    <pre>{{ cluster.uniqueLogEntries|last().Message|escape }}</pre>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        {% if cluster.NumUniqueEntries > 1 %}
+
+            <table class="wysiwyg-macro" data-macro-name="expand" data-macro-schema-version="1"
+                   data-macro-body-type="RICH_TEXT"
+                   data-macro-parameters="title=View all unique messages">
+                <tbody>
+                <tr>
+                    <td class="wysiwyg-macro-body">
+                        <table class="wysiwyg-macro" data-macro-name="code"
+                               data-macro-schema-version="1"
+                               data-macro-body-type="PLAIN_TEXT">
+                            <tbody>
+                            <tr>
+                                <td class="wysiwyg-macro-body">
+                                <pre>{% for uniqueLogEntry in cluster.uniqueLogEntries %}[{{ uniqueLogEntry.LastDate }}] {{ uniqueLogEntry.Message|escape }}{% if not loop.last %}{{ '\n' }}{% endif %}{% endfor %}
+                                </pre>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+        <table class="wysiwyg-macro" data-macro-name="expand" data-macro-schema-version="1"
+               data-macro-body-type="RICH_TEXT"
+               data-macro-parameters="title=View whole{{ cluster.NumEntries==1?'':' last' }} log entry">
+            <tbody>
+            <tr>
+                <td class="wysiwyg-macro-body">
+                    <table class="wysiwyg-macro" data-macro-name="code"
+                           data-macro-schema-version="1"
+                           data-macro-body-type="PLAIN_TEXT">
+                        <tbody>
+                        <tr>
+                            <td class="wysiwyg-macro-body">
+                                <pre>{{ cluster.LastLines }}</pre>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+{% endfor %}

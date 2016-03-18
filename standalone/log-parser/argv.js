@@ -1,0 +1,16 @@
+module.exports = require('optimist')
+    .alias('types', 't')
+    .alias('start', 's')
+    .alias('end', 'e')
+    .alias('file', 'f')
+    .alias('output','o')
+    .alias('threshold', 'l')
+    .alias('server', 'v')
+    .default('file', null)
+    .default('types', 'WARN|ERROR')
+    .default('start', '0')
+    .default('end', true)
+    .default('threshold', 0.3)
+    .default('output', 'cli')//html
+    .default('server', false)
+    .argv;
