@@ -21,7 +21,7 @@ module.exports = class WebServer {
         //res.send(message);
         //});
 
-        var api = new Api(app, {files: this.config.files});
+        var api = new Api(app, {files: this.config.files, sourcePath: this.config.sourcePath});
         api.load();
 
         if (this.config.devServer) {

@@ -11,9 +11,18 @@ module.exports = class Api {
         });
     }
 
-    putResourceAsync(name, callback) {
+    /**
+     *
+     * @param name
+     * @param callback
+     * @param contentType?
+     */
+    putResourceAsync(name, callback, contentType) {
+        if (contentType == null) {
+            contentType = 'application/json'
+        }
         this.app.get('/api/' + name, (req, res)=> {
-            res.set('Content-Type', 'application/json');
+            res.set('Content-Type', contentType);
             callback.call(this, req, res);
         });
     }

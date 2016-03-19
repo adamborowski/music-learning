@@ -23,6 +23,7 @@ finder.find().then(val=> {
     var webserver = new WebServer({
         port: argv.port,
         files,
+        sourcePath: sourcePath,
         devServer: argv['webpack-dev-server'],
         devServerPort: argv['webpack-dev-port']
     });

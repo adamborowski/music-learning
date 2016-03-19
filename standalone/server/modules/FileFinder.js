@@ -21,11 +21,12 @@ module.exports = class FileFinder {
                 filterFunction: this.filter.bind(this)
             });
 
-            finder.on("match", function (filePath, stat) {
+            finder.on("match", (filePath, stat)=> {
                 allPromises.push(new Promise((resolve, reject)=> {
-                    id3({file: filePath, type: id3.OPEN_LOCAL}, function (err, tags) {
+                    id3({file: filePath, type: id3.OPEN_LOCAL}, (err, tags) => {
                         // tags now contains your ID3 tags
                         tags.fileName = path.basename(filePath, ".mp3");
+                        tags.filePath = path.relative(this.path, filePath);
                         resolve(tags);
                     });
                 }));

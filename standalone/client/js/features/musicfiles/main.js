@@ -13,6 +13,7 @@ import FeatureBase from 'lib/FeatureBase';
 import Routes from './Routes';
 
 import MusicFileService from './service/MusicFileService';
+import PlaybackService from './service/PlaybackService';
 
 import ListController from './controller/ListController';
 import MusicFileController from './controller/MusicFileController';
@@ -30,6 +31,7 @@ class Feature extends FeatureBase {
         this.controller('ListController', ListController);
         this.controller('MusicFileController', MusicFileController);
         this.service('MusicFileService', MusicFileService);
+        this.service('PlaybackService', PlaybackService);
         this.directive('musicFile', MusicFileDirective);
     }
 }
