@@ -1,2 +1,2 @@
 #!/usr/bin/env node --harmony --max-old-space-size=200000
-require("./log-parser/log-parser");
+require("./server/main");
