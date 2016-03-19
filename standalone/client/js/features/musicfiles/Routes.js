@@ -6,14 +6,14 @@
  *  @date    Jan 20, 2016
  *
  */
-import tpl from './partials/logs.html';
+import tpl from './partials/musicFiles.html';
 
 export default [
     {
         id: 'logs',
-        isDefault: false,
-        when: '/logs',
-        controller: 'LogController as logController',
+        isDefault: true,
+        when: '/music-files',
+        controller: 'ListController as listController',
         template: tpl
     }
 ];

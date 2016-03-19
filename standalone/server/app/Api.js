@@ -1,19 +1,13 @@
-module.exports = class Api {
+var AbstractApi = require('../modules/AbstractApi');
+module.exports = class Api extends AbstractApi {
     constructor(app, config) {
-        this.app = app;
+        super(app);
         this.config = config;
-    }
-
-    putResource(name, callback) {
-        this.app.get('/api/' + name, (req, res)=> {
-            res.set('Content-Type', 'application/json');
-            res.send(callback(req));
-        });
     }
 
     load() {
         //this.putResource('clusters', req=>this.result.clusterContainers);
-        this.putResource('files', this.getFiles.bind(this));
+        this.putResource('files', this.getFiles);
     }
 
     getFiles(req) {

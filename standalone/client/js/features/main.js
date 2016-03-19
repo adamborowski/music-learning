@@ -10,5 +10,6 @@ import about from './about/main';
 import common from './common/main';
 import home from './home/main';
 import logs from './logs/main';
+import musicfiles from './musicfiles/main'
 
-export default [about, ...common, home, logs];
+export default [about, ...common, home, logs, musicfiles];
