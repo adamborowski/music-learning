@@ -6,6 +6,7 @@ module.exports = require('optimist')
     .alias('output','o')
     .alias('threshold', 'l')
     .alias('server', 'v')
+    .alias('debug-server', 'd')
     .default('file', null)
     .default('types', 'WARN|ERROR')
     .default('start', '0')
@@ -13,4 +14,5 @@ module.exports = require('optimist')
     .default('threshold', 0.3)
     .default('output', 'cli')//html
     .default('server', false)
+    .default('debug-server', false)
     .argv;

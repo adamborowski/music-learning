@@ -50,6 +50,6 @@ rl.on('close', ()=> {
 
     var clusterContainers = uniqueLogEntries.map((type, typeEntries) => clusterizer.clusterize(typeEntries.getValues(), argv.threshold));
 
-    result.process(clusterContainers, process.stdout, argv.server, argv.threshold, allLogEntries);
+    result.process(clusterContainers, process.stdout, argv.server, argv.threshold, allLogEntries, argv['debug-server']);
 
 });

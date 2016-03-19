@@ -1,5 +1,6 @@
 var tmpl = require('./template-loader');
 var proxy = require('proxy-middleware');
+var path = require('path');
 var url = require('url');
 var Api = require('./api');
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
      *
      * @param clusterContainers ClusterContainer[]
      */
-    process: function (clusterContainers, target, runServer, threshold, allLogEntries) {
+    process: function (clusterContainers, target, runServer, threshold, allLogEntries, devServer) {
 
         if (runServer) {
 
@@ -38,7 +39,14 @@ module.exports = {
             var api = new Api(app, {clusterContainers, threshold, allLogEntries});
             api.load();
 
-            app.use('/', proxy(url.parse('http://localhost:8080')));
+            if (devServer) {
+                app.use('/', proxy(url.parse('http://localhost:8080')));
+            }
+            else {
+                var staticPath = path.resolve(__dirname, '../logbrowser/build/');
+                console.log('\n static path: ' + staticPath);
+                app.use('/', express.static(staticPath));
+            }
             app.listen(3000, function () {
                 process.stderr.write('\nView report on http://localhost:3000');
             });

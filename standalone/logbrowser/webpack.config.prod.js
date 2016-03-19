@@ -58,7 +58,8 @@ module.exports = {
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
             compress: {
-                warnings: false
+                warnings: false,
+                mangle: false
             }
         }),
         new webpack.optimize.CommonsChunkPlugin('[hash].common.bundle.js')
