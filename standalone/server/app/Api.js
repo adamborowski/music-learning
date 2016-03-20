@@ -10,7 +10,7 @@ module.exports = class Api extends AbstractApi {
     load() {
         //this.putResource('clusters', req=>this.result.clusterContainers);
         this.putResource('files', this.getFiles);
-        this.putResourceAsync('file', this.getFile);
+        this.putResourceAsync('get', 'file/:url', this.getFile);
     }
 
     getFiles(req) {
@@ -44,16 +44,17 @@ module.exports = class Api extends AbstractApi {
     }
 
     getFile(request, response) {
-        var filePath = path.resolve(this.config.sourcePath, request.query.file);
-        var stat = fs.statSync(filePath);
 
-        response.writeHead(200, {
-            'Content-Type': 'audio/mpeg',
-            'Content-Length': stat.size
-        });
+        var filePath = path.resolve(this.config.sourcePath, decodeURIComponent(request.params.url));
+        //var stat = fs.statSync(filePath);
+        //
+        //response.writeHead(200, {
+        //    'Content-Type': 'audio/mpeg',
+        //    'Content-Length': stat.size
+        //});
 
-        var readStream = fs.createReadStream(filePath);
-        readStream.pipe(response);
+        //var readStream = fs.createReadStream(filePath);
+        response.sendFile(filePath);
     }
 
 

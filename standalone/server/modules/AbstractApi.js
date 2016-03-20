@@ -17,11 +17,11 @@ module.exports = class Api {
      * @param callback
      * @param contentType?
      */
-    putResourceAsync(name, callback, contentType) {
+    putResourceAsync(method, name, callback, contentType) {
         if (contentType == null) {
             contentType = 'application/json'
         }
-        this.app.get('/api/' + name, (req, res)=> {
+        this.app[method]('/api/' + name, (req, res)=> {
             res.set('Content-Type', contentType);
             callback.call(this, req, res);
         });
