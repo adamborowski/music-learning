@@ -1,6 +1,6 @@
 <!--action menu-->
 <div>
-    <div ng-click="controller.play()" class="a-header" style="position: relative;">
+    <div ng-click="controller.play()" class="a-header" ng-class="{current: current}" style="position: relative;">
 
         <strong class="a-num-total-entries" title="Number of total entries">{{controller.NumTotalEntries}}</strong>
         <code class="a-message">{{file.fileName}}</code>
