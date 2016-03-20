@@ -1,8 +1,10 @@
 var Howl = require('howler').Howl;
 module.exports = class PlaybackService {
-    constructor(utils) {
+    constructor(utils, $rootScope) {
         this.utils = utils;
+        this.defaultDuration = 10000;
         this.fadeDuration = 2000;
+        this.$rootScope = $rootScope;
     }
 
     /**
@@ -23,6 +25,9 @@ module.exports = class PlaybackService {
             onload: function () {
                 var audio = this;
                 if (from != null && duration != null) {
+                    if (duration == 'default') {
+                        duration = self.defaultDuration;
+                    }
                     var length = audio._duration * 1000;
                     if (duration > length) {
                         duration = length;
@@ -40,6 +45,10 @@ module.exports = class PlaybackService {
                     self.fadeOutTimeout = setTimeout(()=> {
                         audio.fade(1, 0, self.fadeDuration, ()=> {
                             audio.unload();
+                            delete self.audio;
+                            delete self.musicFile;
+                            self.$rootScope.$apply();
+                            self.$rootScope.$broadcast('musicend')
                         });
                     }, duration - self.fadeDuration)
                 }
@@ -47,11 +56,20 @@ module.exports = class PlaybackService {
                 if (from != null) {
                     audio.pos(from / 1000);
                 }
-                audio.fade(0, 1, self.fadeDuration)
+                audio.fade(0, 1, self.fadeDuration);
 
             }
         });
         this.musicFile = musicFile;
+        this.lastMusicFile = musicFile;
+        var $scope = this.$rootScope;
+        if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+            $scope.$apply();
+        }
+    }
+
+    get isPlaying() {
+        return this.audio != null;
     }
 
     stop() {

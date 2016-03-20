@@ -9,6 +9,7 @@
  */
 'use strict';
 import "./style/MusicFiles.less"
+import "./style/player.less"
 import FeatureBase from 'lib/FeatureBase';
 import Routes from './Routes';
 
@@ -17,8 +18,10 @@ import PlaybackService from './service/PlaybackService';
 
 import ListController from './controller/ListController';
 import MusicFileController from './controller/MusicFileController';
+import PlayerController from './controller/PlayerController';
 
 import MusicFileDirective from './directive/MusicFileDirective';
+import PlayerDirective from './directive/PlayerDirective';
 
 class Feature extends FeatureBase {
 
@@ -30,9 +33,11 @@ class Feature extends FeatureBase {
     execute() {
         this.controller('ListController', ListController);
         this.controller('MusicFileController', MusicFileController);
+        this.controller('PlayerController', PlayerController);
         this.service('MusicFileService', MusicFileService);
         this.service('PlaybackService', PlaybackService);
         this.directive('musicFile', MusicFileDirective);
+        this.directive('player', PlayerDirective);
     }
 }
 

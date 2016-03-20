@@ -14,10 +14,18 @@ export default class MusicFileService {
         this.getDemoList = function () {
             return $http.get(utils.getApi('/demolist'));
         };
+        this.filesPromise = new $q((resolve, reject)=> {
+            this.$http.get(this.utils.getApi('/files')).then((a)=>resolve(this.Shuffle(a.data)));
+        });
+    }
+
+    Shuffle(o) {
+        for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
     }
 
     getFiles() {
-        return this.$http.get(this.utils.getApi('/files'));
+        return this.filesPromise;
     }
 
     getLogs(from, to) {

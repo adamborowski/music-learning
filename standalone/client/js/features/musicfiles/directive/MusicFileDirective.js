@@ -4,7 +4,8 @@ export default () => {
         restrict: 'E',
         template: tpl,
         scope: {
-            file: '='
+            file: '=',
+            current: '='
         },
         controller: 'MusicFileController as controller'
     }

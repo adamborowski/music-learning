@@ -41,6 +41,17 @@ music-file {
     //margin-top: 2px;
   }
   .a-header {
+    border-bottom: 1px solid transparent;
+    &.current {
+      -webkit-box-sizing: content-box;
+      -moz-box-sizing: content-box;
+      box-sizing: content-box;
+      font-weight: bold;
+      @border: 1px solid #c32;
+      border-top: @border;
+      border-bottom: @border;
+      z-index: 10;
+    }
     background: #f3f3f3;
     cursor: pointer;
     padding: @padding;
