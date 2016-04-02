@@ -1,18 +1,38 @@
 var Howl = require('howler').Howl;
 module.exports = class PlaybackService {
-    constructor(utils, $rootScope) {
+    constructor(utils, $rootScope, MusicFileService) {
         this.utils = utils;
         this.defaultDuration = 10000;
         this.fadeDuration = 2000;
         this.$rootScope = $rootScope;
+        this._playFromStart = true;
+        this.musicFileService = MusicFileService;
+    }
+
+    playDefault(musicFile, callback) {
+        this.play(musicFile, callback, this.PlayFromStart ? 0 : 'random', this.defaultDuration);
+    }
+
+    playNextDefault() {
+        this.musicFileService.getFiles().then((files)=> {
+            this.playDefault(files[files.indexOf(this.lastMusicFile) + 1] || this.LoopList && files[0], null);
+        });
+    }
+
+    playPrevDefault() {
+        this.musicFileService.getFiles().then((files)=> {
+            this.playDefault(files[files.indexOf(this.lastMusicFile) - 1] || this.LoopList && files[files.length - 1], null);
+        });
     }
 
     /**
      * @param musicFile{MusicFile}
      */
     play(musicFile, callback, from, duration) {
-
         this.stop();
+        if (musicFile == null) {
+            return;
+        }
         var self = this;
         var audio = this.audio = new Howl({
             urls: [this.utils.getApi("file/" + encodeURIComponent(musicFile.filePath))],
@@ -56,7 +76,9 @@ module.exports = class PlaybackService {
                 if (from != null) {
                     audio.pos(from / 1000);
                 }
-                audio.fade(0, 1, self.fadeDuration);
+                if (from > 0) {
+                    audio.fade(0, 1, self.fadeDuration);
+                }
 
             }
         });
@@ -71,6 +93,25 @@ module.exports = class PlaybackService {
     get isPlaying() {
         return this.audio != null;
     }
+
+    set PlayFromStart(val) {
+        this._playFromStart = val;
+        console.info('PlayFromStart set to ' + val);
+    }
+
+    get PlayFromStart() {
+        return this._playFromStart;
+    }
+
+    get LoopList() {
+        return this._loopList;
+    }
+
+    set LoopList(val) {
+        this._loopList = val;
+        console.info('LoopList set to ' + val);
+    }
+
 
     stop() {
         clearTimeout(this.fadeOutTimeout);

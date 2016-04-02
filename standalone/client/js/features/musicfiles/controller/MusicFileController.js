@@ -5,7 +5,7 @@ export default class MusicFileController {
     }
 
     play() {
-        this.playbackService.play(this.$scope.file, this.onFileFinish.bind(this), 'random', 'default');
+        this.playbackService.playDefault(this.$scope.file, this.onFileFinish.bind(this));
     }
 
     onFileFinish() {

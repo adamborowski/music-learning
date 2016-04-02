@@ -8,12 +8,36 @@ export default class PlayerController {
         MusicFileService.getFiles().then((files)=> {
             $scope.$on('musicend', (a)=> {
                 if ($scope.autoplay) {
-                    PlaybackService.play(files[files.indexOf(PlaybackService.lastMusicFile) + 1], null, 'random', 'default');
+                    this.playbackService.playNextDefault();//(files[files.indexOf(PlaybackService.lastMusicFile) + 1], null);
                 }
             })
         });
 
+        $scope.$watch(()=> {
+            return $scope.randomStart;
+        }, (randomStart) => {
+            // handle it here. e.g.:
+            this.playbackService.PlayFromStart = !randomStart;
+        });
+        $scope.$watch(()=> {
+            return this.playbackService.PlayFromStart;
+        }, (playFromStart) => {
+            // handle it here. e.g.:
+            $scope.randomStart = !playFromStart;
+        });
 
+        $scope.$watch(()=> {
+            return $scope.loopList;
+        }, (val) => {
+            // handle it here. e.g.:
+            this.playbackService.LoopList = val;
+        });
+        $scope.$watch(()=> {
+            return this.playbackService.LoopList;
+        }, (val) => {
+            // handle it here. e.g.:
+            $scope.loopList = val;
+        });
     }
 
     set Duration(val) {

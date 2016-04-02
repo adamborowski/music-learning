@@ -5,18 +5,28 @@
                 <input type="checkbox" ng-model="autoplay"> Auto play
             </label>
         </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="randomStart"> Random start
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="loopList"> Loop list
+            </label>
+        </div>
         <div class="form-group">
-
-            <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
             <div class="input-group">
                 <input type="number" ng-model="controller.Duration" class="form-control" id="exampleInputAmount"
                        placeholder="Duration">
                 <div class="input-group-addon"> s</div>
             </div>
         </div>
+        <button ng-click="playbackService.playPrevDefault()" class="btn btn-primary">&laquo;</button>
+        <button ng-click="playbackService.playNextDefault()" class="btn btn-primary">&raquo;</button>
+        <button ng-show="playbackService.isPlaying" ng-click="playbackService.stop()"
+                class="btn btn-primary">&blacksquare;</button>
         <button ng-click="controller.fullscreen()" class="btn btn-primary">Fullscreen</button>
-        <button ng-show="playbackService.isPlaying" ng-click="playbackService.stop()" class="btn btn-primary">Stop
-        </button>
     </form>
     <div class="fullscreen" ng-if="fullscreen">
         <h1>{{playbackService.musicFile.fileName}}</h1>
