@@ -2,7 +2,7 @@ var Howl = require('howler').Howl;
 module.exports = class PlaybackService {
     constructor(utils, $rootScope, MusicFileService) {
         this.utils = utils;
-        this.defaultDuration = 10000;
+        this.defaultDuration = localStorage.get('default-duration') || 300000;
         this.fadeDuration = 2000;
         this.$rootScope = $rootScope;
         this._playFromStart = true;
