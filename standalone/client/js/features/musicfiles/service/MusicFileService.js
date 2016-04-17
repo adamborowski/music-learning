@@ -17,7 +17,7 @@ export default class MusicFileService {
         this.filesPromise = new $q((resolve, reject)=> {
             this.$http.get(this.utils.getApi('/files')).then((a)=> {
                 a.data.forEach((x)=> {
-                    x.known = localStorage.getItem("known/" + x.filePath) || false
+                    x.known = localStorage.getItem("known/" + x.filePath) == "yes";
                     x.fileName = x.fileName.replace(/^([^\d]*?)\s*-\s*(.*)$/, "<strong>$1</strong> - $2")
                 });
                 resolve(this.Shuffle(a.data))
@@ -36,7 +36,13 @@ export default class MusicFileService {
 
     toggleKnowIt(musicFile) {
         musicFile.known = !musicFile.known;
-        localStorage.setItem("known/" + musicFile.filePath, musicFile.known);
+        var key = "known/" + musicFile.filePath;
+        if (musicFile.known) {
+            localStorage.setItem(key, "yes");
+        }
+        else {
+            localStorage.removeItem(key);
+        }
     }
 
     jira(entry){

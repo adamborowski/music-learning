@@ -144,7 +144,7 @@ module.exports = class PlaybackService {
         }
         else {
             console.info('CurrentFilter set to ' + val.text);
-            if (!this._currentFilter.filter(this.lastMusicFile)) {
+            if (this.isPlaying && !this._currentFilter.filter(this.lastMusicFile)) {
                 this.playNextDefault();
             }
         }
