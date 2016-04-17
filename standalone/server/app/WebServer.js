@@ -30,7 +30,10 @@ module.exports = class WebServer {
         else {
             var staticPath = path.resolve(__dirname, '../../client/build/');
             console.log('\n static path: ' + staticPath);
-            app.use('/', express.static(staticPath));
+            app.use(express.static(staticPath));
+            app.all('*', function (req, res) {
+                res.sendfile(staticPath + "/" + 'index.html');
+            });
         }
         app.listen(this.config.port, ()=> {
             process.stderr.write(`\nView report on http://localhost:${this.config.port}\n`);
