@@ -1,7 +1,8 @@
 export default class MusicFileController {
-    constructor($scope, PlaybackService) {
+    constructor($scope, PlaybackService, MusicFileService) {
         this.$scope = $scope;
         this.playbackService = PlaybackService;
+        this.musicFileService = MusicFileService;
     }
 
     play() {
@@ -10,5 +11,10 @@ export default class MusicFileController {
 
     onFileFinish() {
 
+    }
+
+    onKnowItClick(event) {
+        event.stopPropagation();
+        this.musicFileService.toggleKnowIt(this.$scope.file);
     }
 }

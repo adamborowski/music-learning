@@ -15,7 +15,14 @@ export default class MusicFileService {
             return $http.get(utils.getApi('/demolist'));
         };
         this.filesPromise = new $q((resolve, reject)=> {
-            this.$http.get(this.utils.getApi('/files')).then((a)=>resolve(this.Shuffle(a.data)));
+            this.$http.get(this.utils.getApi('/files')).then((a)=> {
+                a.data.forEach((x)=> {
+                    x.known = localStorage.getItem("known/" + x.filePath) || false
+                    x.fileName = x.fileName.replace(/^([^\d]*?)\s*-\s*(.*)$/, "<strong>$1</strong> - $2")
+                });
+                console.log(a.data);
+                resolve(this.Shuffle(a.data))
+            });
         });
     }
 
@@ -28,8 +35,9 @@ export default class MusicFileService {
         return this.filesPromise;
     }
 
-    getLogs(from, to) {
-        return this.$http.get(this.utils.getApi(`/logs?from=${from}&to=${to}`));
+    toggleKnowIt(musicFile) {
+        musicFile.known = !musicFile.known;
+        localStorage.setItem("known/" + musicFile.filePath, musicFile.known);
     }
 
     jira(entry){

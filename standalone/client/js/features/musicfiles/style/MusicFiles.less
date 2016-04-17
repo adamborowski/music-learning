@@ -56,6 +56,16 @@ music-file {
     cursor: pointer;
     padding: @padding;
     border-top: 1px solid #cccccc;
+    &:not(:hover) .i-know-it {
+      display: none;
+    }
+    .i-know-it {
+      margin-left: 10px;
+    }
+    .i-know-it-icon {
+      color: #00cc66;
+      font-size: 20px;
+    }
     &:hover {
       background: #eeeeee;
     }
