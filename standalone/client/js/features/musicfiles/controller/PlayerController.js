@@ -1,5 +1,5 @@
 export default class PlayerController {
-    constructor($scope, PlaybackService, MusicFileService) {
+    constructor($scope, PlaybackService, MusicFileService, FilterService) {
         this.$scope = $scope;
         $scope.autoplay = true;
         this.playbackService = PlaybackService;
@@ -38,6 +38,32 @@ export default class PlayerController {
             // handle it here. e.g.:
             $scope.loopList = val;
         });
+
+        $scope.$watch(()=> {
+            return $scope.currentFilter;
+        }, (val) => {
+            // handle it here. e.g.:
+            this.playbackService.CurrentFilter = val;
+        });
+        $scope.$watch(()=> {
+            return this.playbackService.CurrentFilter;
+        }, (val) => {
+            // handle it here. e.g.:
+            $scope.currentFilter = val;
+        });
+
+
+        $scope.availableFilters = FilterService.filters.map(a=> {
+            return {
+                name: a.name,
+                text: a.text,
+                click: ()=> {
+                    PlaybackService.CurrentFilter = a;
+                }
+            }
+        });
+        $scope.currentFilter = PlaybackService.CurrentFilter;
+
     }
 
     set Duration(val) {

@@ -15,6 +15,12 @@
                 <input type="checkbox" ng-model="loopList"> Loop list
             </label>
         </div>
+        <button type="button" class="btn btn-default" bs-dropdown=" availableFilters"
+                aria-haspopup="true" aria-expanded="false">
+            {{currentFilter.text}}
+        </button>
+
+
         <div class="form-group">
             <div class="input-group">
                 <input type="number" ng-model="controller.Duration" class="form-control" id="exampleInputAmount"
@@ -29,6 +35,6 @@
         <button ng-click="controller.fullscreen()" class="btn btn-primary">Fullscreen</button>
     </form>
     <div class="fullscreen" ng-if="fullscreen">
-        <h1>{{playbackService.musicFile.fileName}}</h1>
+        <h1 ng-bind-html="playbackService.musicFile.fileName"></h1>
     </div>
 </div>

@@ -15,6 +15,7 @@ import Routes from './Routes';
 
 import MusicFileService from './service/MusicFileService';
 import PlaybackService from './service/PlaybackService';
+import FilterService from './service/FilterService';
 
 import ListController from './controller/ListController';
 import MusicFileController from './controller/MusicFileController';
@@ -36,6 +37,7 @@ class Feature extends FeatureBase {
         this.controller('PlayerController', PlayerController);
         this.service('MusicFileService', MusicFileService);
         this.service('PlaybackService', PlaybackService);
+        this.service('FilterService', FilterService);
         this.directive('musicFile', MusicFileDirective);
         this.directive('player', PlayerDirective);
     }

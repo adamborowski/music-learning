@@ -16,5 +16,6 @@ export default class MusicFileController {
     onKnowItClick(event) {
         event.stopPropagation();
         this.musicFileService.toggleKnowIt(this.$scope.file);
+        this.playbackService.onFilterChange();
     }
 }

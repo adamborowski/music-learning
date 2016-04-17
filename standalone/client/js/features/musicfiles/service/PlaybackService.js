@@ -1,27 +1,48 @@
 var Howl = require('howler').Howl;
 module.exports = class PlaybackService {
-    constructor(utils, $rootScope, MusicFileService) {
+    constructor(utils, $rootScope, MusicFileService, FilterService) {
         this.utils = utils;
         this.defaultDuration = localStorage.getItem('default-duration') || 300000;
         this.fadeDuration = 2000;
         this.$rootScope = $rootScope;
         this._playFromStart = true;
         this.musicFileService = MusicFileService;
+        this._currentFilter = FilterService.filters[0];
+    }
+
+    onFilterChange() {
+        if (this.isPlaying) {
+            if (!this._currentFilter.filter(this.musicFile)) {
+                this.playNextDefault();
+            }
+        }
     }
 
     playDefault(musicFile, callback) {
         this.play(musicFile, callback, this.PlayFromStart ? 0 : 'random', this.defaultDuration);
     }
 
-    playNextDefault() {
+    playNextDefault(file) {
+        if (file == null) {
+            file = this.lastMusicFile;
+        }
         this.musicFileService.getFiles().then((files)=> {
-            this.playDefault(files[files.indexOf(this.lastMusicFile) + 1] || this.LoopList && files[0], null);
+            var fileIndex = files.indexOf(file);
+            var searchArray = files.slice(fileIndex + 1).concat(this._loopList ? files.slice(0, fileIndex) : []);
+            var nextFile = searchArray.find((x)=>this._currentFilter.filter(x));
+            this.playDefault(nextFile, null);
         });
     }
 
-    playPrevDefault() {
+    playPrevDefault(file) {
+        if (file == null) {
+            file = this.lastMusicFile;
+        }
         this.musicFileService.getFiles().then((files)=> {
-            this.playDefault(files[files.indexOf(this.lastMusicFile) - 1] || this.LoopList && files[files.length - 1], null);
+            var fileIndex = files.indexOf(file);
+            var searchArray = (this._loopList ? files.slice(fileIndex + 1) : []).concat(files.slice(0, fileIndex)).reverse();
+            var nextFile = searchArray.find((x)=>this._currentFilter.filter(x));
+            this.playDefault(nextFile, null);
         });
     }
 
@@ -110,6 +131,23 @@ module.exports = class PlaybackService {
     set LoopList(val) {
         this._loopList = val;
         console.info('LoopList set to ' + val);
+    }
+
+    get CurrentFilter() {
+        return this._currentFilter;
+    }
+
+    set CurrentFilter(val) {
+        this._currentFilter = val;
+        if (val == null) {
+            console.warn("Wrong current filter value");
+        }
+        else {
+            console.info('CurrentFilter set to ' + val.text);
+            if (!this._currentFilter.filter(this.lastMusicFile)) {
+                this.playNextDefault();
+            }
+        }
     }
 
 

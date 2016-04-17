@@ -20,7 +20,6 @@ export default class MusicFileService {
                     x.known = localStorage.getItem("known/" + x.filePath) || false
                     x.fileName = x.fileName.replace(/^([^\d]*?)\s*-\s*(.*)$/, "<strong>$1</strong> - $2")
                 });
-                console.log(a.data);
                 resolve(this.Shuffle(a.data))
             });
         });
