@@ -3,6 +3,7 @@ export default class PlayerController {
         this.$scope = $scope;
         $scope.autoplay = true;
         this.playbackService = PlaybackService;
+        this.musicFileService = MusicFileService;
         $scope.playbackService = this.playbackService;
 
         MusicFileService.getFiles().then((files)=> {
@@ -80,5 +81,11 @@ export default class PlayerController {
 
     fullscreen() {
         this.$scope.fullscreen = !this.$scope.fullscreen;
+    }
+
+    onKnowItClick(event) {
+        event.stopPropagation();
+        this.musicFileService.toggleKnowIt(this.playbackService.musicFile);
+        this.playbackService.onFilterChange();
     }
 }
